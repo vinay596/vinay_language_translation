@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Translation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #translateForm {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 70px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resultBox {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            width: 100%;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Language Translation</h1>
+    <form id="translateForm">
+        <label for="textInput">Enter Text:</label>
+        <textarea id="textInput" name="text" rows="4" placeholder="Type your text here..."></textarea>
+        <button type="button" onclick="makeTranslationRequest('te')">Telugu</button>
+        <button type="button" onclick="makeTranslationRequest('hi')">Hindi</button>
+        <button type="button" onclick="makeTranslationRequest('ta')">Tamil</button>
+        <button type="button" onclick="makeTranslationRequest('ml')">Malayalam</button>
+
+        <!-- Blue "Start Recording" Button -->
+        <button type="button" onclick="startSpeechRecognition()" style="background-color: #3498db; color: #fff;">Start Recording</button>
+    </form>
+
+    <div id="resultBox"></div>
+
+    <script>
+        function makeTranslationRequest(targetLanguage) {
+            const text = document.getElementById('textInput').value;
+            fetch(`http://localhost:5000/translate`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text: text, target_language: targetLanguage})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('resultBox').innerText = `Translated Text:\n${data.translated_text}`;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function startSpeechRecognition() {
+            const recognition = new webkitSpeechRecognition(); // for WebKit browsers (Chrome, Safari)
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('textInput').value = transcript;
+            };
+
+            recognition.onend = function() {
+                recognition.stop();
+            };
+
+            recognition.start();
+        }
+    </script>
+</body>
+</html>
