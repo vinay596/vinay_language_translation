@@ -82,7 +82,6 @@
         <button type="button" onclick="makeTranslationRequest('ta')">Tamil</button>
         <button type="button" onclick="makeTranslationRequest('ml')">Malayalam</button>
 
-        <!-- Blue "Start Recording" Button -->
         <button type="button" onclick="startSpeechRecognition()" style="background-color: #3498db; color: #fff;">Start Recording</button>
     </form>
 
@@ -107,7 +106,7 @@
         }
 
         function startSpeechRecognition() {
-            const recognition = new webkitSpeechRecognition(); // for WebKit browsers (Chrome, Safari)
+            const recognition = new webkitSpeechRecognition();
             recognition.lang = 'en-US';
 
             recognition.onresult = function(event) {
