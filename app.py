@@ -5,7 +5,7 @@ import googletrans
 app = Flask(__name__)
 CORS(app)
 
-
+# when website open with this end point this home function will be called
 @app.route('/')
 def home():
     return render_template('translate.html')
