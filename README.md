@@ -25,8 +25,8 @@ Technologies Used
 
 How to Run:
 
-1. Install the required Python packages:
-   pip install Flask googletrans==4.0.0-rc1
+   --> Install the required Python packages:
+   --> pip install Flask googletrans==4.0.0-rc1
 
 
 
